@@ -421,6 +421,211 @@
         font-size: 11px;
       }
 
+      .guestbook {
+        max-width: 740px;
+        margin: 83px auto 0;
+        padding-top: 32px;
+        border-top: 1px solid var(--line);
+        scroll-margin-top: 30px;
+      }
+
+      .guestbook-intro {
+        margin: 12px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.9;
+        word-break: keep-all;
+      }
+
+      .guestbook-form {
+        margin-top: 23px;
+        padding: 21px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: rgb(255 255 255 / 46%);
+      }
+
+      .guestbook-fields {
+        display: grid;
+        grid-template-columns: 82px minmax(0, 1fr) 94px;
+        align-items: center;
+        gap: 13px 14px;
+      }
+
+      .guestbook-label {
+        color: #747b70;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .guestbook-input {
+        width: 100%;
+        min-width: 0;
+        padding: 11px 12px;
+        border: 1px solid #e3e5dc;
+        border-radius: 4px;
+        background: #fffefa;
+        color: var(--ink);
+        font: inherit;
+        font-size: 12px;
+      }
+
+      .guestbook-input:invalid {
+        border-color: #e5b6a3;
+      }
+
+      .guestbook-password-help {
+        grid-column: 2 / 4;
+        margin: -6px 0 0;
+        color: #858b80;
+        font-size: 10px;
+        line-height: 1.6;
+      }
+
+      .guestbook-input:focus-visible,
+      .guestbook-submit:focus-visible {
+        outline: 2px solid #83aa45;
+        outline-offset: 3px;
+      }
+
+      .guestbook-message {
+        min-height: 91px;
+        resize: vertical;
+      }
+
+      .guestbook-submit-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 15px;
+      }
+
+      .guestbook-status {
+        margin: 0;
+        color: #858b80;
+        font-size: 10px;
+        line-height: 1.7;
+      }
+
+      .guestbook-submit {
+        flex: 0 0 auto;
+        padding: 10px 14px;
+        border: 0;
+        border-radius: 4px;
+        background: #526b37;
+        color: #fff;
+        cursor: pointer;
+        font: inherit;
+        font-size: 11px;
+        font-weight: 600;
+        transition: background 160ms ease, opacity 160ms ease;
+      }
+
+      .guestbook-submit:hover {
+        background: #40552a;
+      }
+
+      .guestbook-submit:disabled {
+        cursor: wait;
+        opacity: 0.65;
+      }
+
+      .guestbook-list {
+        display: grid;
+        gap: 10px;
+        margin: 18px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .guestbook-entry,
+      .guestbook-empty {
+        padding: 16px 18px;
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        background: rgb(255 255 255 / 38%);
+      }
+
+      .guestbook-entry-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 14px;
+      }
+
+      .guestbook-entry-name {
+        margin: 0;
+        color: #465d33;
+        font-size: 12px;
+        font-weight: 700;
+        overflow-wrap: anywhere;
+      }
+
+      .guestbook-entry-date {
+        flex: 0 0 auto;
+        color: #92968e;
+        font-family: "DM Mono", "Noto Sans KR", monospace;
+        font-size: 9px;
+      }
+
+      .guestbook-entry-message {
+        margin: 9px 0 0;
+        color: #596058;
+        font-size: 12px;
+        line-height: 1.8;
+        overflow-wrap: anywhere;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .guestbook-entry-actions {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .guestbook-action {
+        min-height: 30px;
+        padding: 6px 10px;
+        border: 1px solid #e2e5d9;
+        border-radius: 4px;
+        background: #fffefa;
+        color: #58634c;
+        cursor: pointer;
+        font: inherit;
+        font-size: 10px;
+        transition: background 150ms ease, border-color 150ms ease;
+      }
+
+      .guestbook-action:hover {
+        border-color: #bcc9a7;
+        background: #f2f5eb;
+      }
+
+      .guestbook-like {
+        color: #8a634d;
+      }
+
+      .guestbook-like-count {
+        margin-left: 3px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .guestbook-like:disabled,
+      .guestbook-action:disabled {
+        cursor: wait;
+        opacity: 0.6;
+      }
+
+      .guestbook-empty {
+        color: #858b80;
+        font-size: 11px;
+        line-height: 1.8;
+      }
+
       .bowling-ball {
         position: relative;
         flex: 0 0 auto;
@@ -544,6 +749,27 @@
           gap: 9px;
         }
       }
+
+      @media (max-width: 480px) {
+        .guestbook {
+          margin-top: 57px;
+          padding-top: 26px;
+        }
+
+        .guestbook-form {
+          padding: 15px;
+        }
+
+        .guestbook-fields {
+          grid-template-columns: 1fr;
+          gap: 8px;
+        }
+
+        .guestbook-submit-row {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+      }
     </style>
   </head>
   <body>
@@ -630,6 +856,35 @@
             </article>
           </div>
         </section>
+
+        <section class="guestbook" id="guestbook" aria-labelledby="guestbook-title">
+          <p class="section-index">04 — LEAVE A NOTE</p>
+          <h2 id="guestbook-title">방명록</h2>
+          <p class="guestbook-intro">와수이에게 짧은 인사를 남겨주세요. 이름과 메시지는 공개되며, 비밀번호는 수정·삭제 확인에만 사용합니다.</p>
+
+          <form class="guestbook-form" id="guestbook-form">
+            <div class="guestbook-fields">
+              <label class="guestbook-label" for="guestbook-name">이름</label>
+              <input class="guestbook-input" id="guestbook-name" name="name" type="text" maxlength="40" autocomplete="nickname" placeholder="이름 또는 닉네임" required />
+              <span aria-hidden="true"></span>
+              <label class="guestbook-label" for="guestbook-message">메시지</label>
+              <textarea class="guestbook-input guestbook-message" id="guestbook-message" name="message" maxlength="500" rows="3" placeholder="따뜻한 인사를 남겨주세요" required></textarea>
+              <span aria-hidden="true"></span>
+              <label class="guestbook-label" for="guestbook-password">비밀번호</label>
+              <input class="guestbook-input" id="guestbook-password" name="password" type="password" minlength="4" maxlength="9" pattern="[!-~]{4,9}" autocomplete="new-password" placeholder="영문·숫자·기호 4~9자" required />
+              <p class="guestbook-password-help">영문·숫자·기호 4~9자. 수정·삭제할 때 필요해요. 비밀번호는 공개되지 않고 복구할 수 없어요.</p>
+            </div>
+            <div class="guestbook-submit-row">
+              <p class="guestbook-status" id="guestbook-status" role="status" aria-live="polite">이름과 메시지는 공개 방명록에 표시됩니다.</p>
+              <button class="guestbook-submit" id="guestbook-submit" type="submit">방명록 남기기 <span aria-hidden="true">↗</span></button>
+            </div>
+          </form>
+
+          <p class="guestbook-intro">공감은 누구나 누를 수 있어요. 반복 클릭은 IP별 횟수 제한으로 완화합니다.</p>
+          <ol class="guestbook-list" id="guestbook-list" aria-live="polite" aria-label="방명록 메시지">
+            <li class="guestbook-empty">방명록을 불러오는 중입니다.</li>
+          </ol>
+        </section>
       </main>
 
       <footer>
@@ -640,5 +895,187 @@
         <p class="footer-note">MADE WITH CURIOSITY · © WASUI</p>
       </footer>
     </div>
+    <script>
+      (() => {
+        const form = document.getElementById("guestbook-form");
+        const list = document.getElementById("guestbook-list");
+        const status = document.getElementById("guestbook-status");
+        const submit = document.getElementById("guestbook-submit");
+
+        const showStatus = (message, isError = false) => {
+          status.textContent = message;
+          status.dataset.state = isError ? "error" : "success";
+        };
+
+        const sendJson = async (url, method, body) => {
+          const response = await fetch(url, {
+            method,
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            body: JSON.stringify(body),
+          });
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.error || "요청을 처리하지 못했습니다.");
+          return data;
+        };
+
+        const createActionButton = (label, className, onClick) => {
+          const button = document.createElement("button");
+          button.className = `guestbook-action ${className}`;
+          button.type = "button";
+          button.textContent = label;
+          button.addEventListener("click", onClick);
+          return button;
+        };
+
+        const manageEntry = async (entry, action) => {
+          const verb = action === "edit" ? "수정" : "삭제";
+          const password = window.prompt(`${verb} 비밀번호를 입력해주세요. (4~9자)`);
+          if (password === null) return;
+          if (password.length < 4 || password.length > 9 || !/^[\x21-\x7E]+$/.test(password)) {
+            showStatus("비밀번호는 영문·숫자·기호 4~9자로 입력해주세요.", true);
+            return;
+          }
+
+          try {
+            if (action === "delete") {
+              if (!window.confirm("이 방명록을 삭제할까요? 삭제한 글은 복구할 수 없습니다.")) return;
+              await sendJson("/api/guestbook", "DELETE", { id: entry.id, password });
+              showStatus("방명록을 삭제했습니다.");
+            } else {
+              const message = window.prompt("수정할 메시지를 입력해주세요. (최대 500자)", entry.message);
+              if (message === null) return;
+              if (!message.trim() || message.trim().length > 500) {
+                showStatus("메시지는 1~500자로 입력해주세요.", true);
+                return;
+              }
+              await sendJson("/api/guestbook", "PATCH", {
+                id: entry.id,
+                password,
+                message: message.trim(),
+              });
+              showStatus("방명록을 수정했습니다.");
+            }
+            await loadEntries();
+          } catch (error) {
+            showStatus(error instanceof Error ? error.message : "요청을 처리하지 못했습니다.", true);
+          }
+        };
+
+        const likeEntry = async (entry, button, count) => {
+          button.disabled = true;
+          try {
+            const data = await sendJson("/api/guestbook", "POST", { action: "like", id: entry.id });
+            count.textContent = String(data.likes);
+            showStatus("공감을 보냈습니다.");
+          } catch (error) {
+            showStatus(error instanceof Error ? error.message : "공감을 등록하지 못했습니다.", true);
+          } finally {
+            button.disabled = false;
+          }
+        };
+
+        const renderEntries = (entries) => {
+          if (!entries.length) {
+            list.replaceChildren();
+            const empty = document.createElement("li");
+            empty.className = "guestbook-empty";
+            empty.textContent = "아직 방명록이 없어요. 첫 인사를 남겨주세요!";
+            list.append(empty);
+            return;
+          }
+
+          const fragment = document.createDocumentFragment();
+          for (const entry of entries) {
+            const item = document.createElement("li");
+            item.className = "guestbook-entry";
+
+            const header = document.createElement("div");
+            header.className = "guestbook-entry-header";
+            const name = document.createElement("h3");
+            name.className = "guestbook-entry-name";
+            name.textContent = entry.name;
+            const time = document.createElement("time");
+            time.className = "guestbook-entry-date";
+            time.dateTime = entry.createdAt;
+            const date = new Date(entry.createdAt);
+            time.textContent = Number.isNaN(date.getTime())
+              ? ""
+              : new Intl.DateTimeFormat("ko-KR", { dateStyle: "medium" }).format(date);
+            header.append(name, time);
+
+            const message = document.createElement("p");
+            message.className = "guestbook-entry-message";
+            message.textContent = entry.message;
+
+            const actions = document.createElement("div");
+            actions.className = "guestbook-entry-actions";
+            const likeCount = document.createElement("span");
+            likeCount.className = "guestbook-like-count";
+            likeCount.textContent = String(entry.likes || 0);
+            const likeButton = createActionButton("♡ 공감", "guestbook-like", () => likeEntry(entry, likeButton, likeCount));
+            likeButton.append(likeCount);
+            actions.append(likeButton);
+
+            if (entry.canManage) {
+              actions.append(
+                createActionButton("수정", "guestbook-edit", () => manageEntry(entry, "edit")),
+                createActionButton("삭제", "guestbook-delete", () => manageEntry(entry, "delete")),
+              );
+            }
+
+            item.append(header, message, actions);
+            fragment.append(item);
+          }
+          list.replaceChildren(fragment);
+        };
+
+        const loadEntries = async () => {
+          try {
+            const response = await fetch("/api/guestbook", {
+              headers: { Accept: "application/json" },
+            });
+            if (!response.ok) throw new Error("방명록을 불러오지 못했습니다.");
+            const data = await response.json();
+            renderEntries(data.entries);
+          } catch {
+            const empty = document.createElement("li");
+            empty.className = "guestbook-empty";
+            empty.textContent = "방명록을 불러올 수 없습니다. 잠시 후 다시 방문해주세요.";
+            list.replaceChildren(empty);
+          }
+        };
+
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          if (!form.reportValidity()) return;
+
+          const fields = new FormData(form);
+          const name = String(fields.get("name") || "").trim();
+          const message = String(fields.get("message") || "").trim();
+          if (!name || !message) {
+            showStatus("이름과 메시지를 모두 입력해주세요.", true);
+            return;
+          }
+
+          submit.disabled = true;
+          showStatus("방명록을 등록하고 있어요…");
+          try {
+            const password = String(fields.get("password") || "");
+            await sendJson("/api/guestbook", "POST", { name, message, password });
+            form.reset();
+            showStatus("방명록을 남겨주셔서 고맙습니다!");
+            await loadEntries();
+          } catch (error) {
+            showStatus(error instanceof Error
+              ? error.message
+              : "방명록을 등록하지 못했습니다.", true);
+          } finally {
+            submit.disabled = false;
+          }
+        });
+
+        loadEntries();
+      })();
+    </script>
   </body>
 </html>

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">와수이 | 엔지니어 · AI 관제 대시보드</title>
+  <desc id="description">엔지니어 와수이의 소개와 AI 관제 대시보드 학습, 볼링 취미를 담은 공유 이미지.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8f7f3" />
+      <stop offset="1" stop-color="#edf2df" />
+    </linearGradient>
+    <linearGradient id="portrait" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e6edcf" />
+      <stop offset="1" stop-color="#c7daa8" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#314825" flood-opacity="0.09" />
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#background)" />
+  <circle cx="1090" cy="72" r="220" fill="#dce9c2" opacity="0.38" />
+  <circle cx="101" cy="576" r="186" fill="#e7e8d8" opacity="0.48" />
+
+  <g fill="none" stroke="#83966c" stroke-opacity="0.15">
+    <circle cx="1030" cy="310" r="200" />
+    <circle cx="1030" cy="310" r="165" />
+    <circle cx="1030" cy="310" r="130" />
+  </g>
+
+  <g transform="translate(92 76)" fill="none" stroke="#e3e5da">
+    <path d="M0 0h1016" />
+  </g>
+  <circle cx="102" cy="76" r="7" fill="#83aa45" />
+  <text x="123" y="82" fill="#19211c" font-family="Arial, 'Noto Sans KR', sans-serif" font-size="18" font-weight="700" letter-spacing="2">WASUI</text>
+  <text x="1108" y="82" fill="#737a72" font-family="Arial, sans-serif" font-size="12" letter-spacing="2" text-anchor="end">ENGINEER · ALWAYS LEARNING</text>
+
+  <g filter="url(#shadow)">
+    <rect x="744" y="138" width="326" height="390" rx="155" fill="url(#portrait)" />
+    <circle cx="907" cy="323" r="119" fill="none" stroke="#46662f" stroke-opacity="0.20" />
+    <circle cx="907" cy="323" r="92" fill="none" stroke="#46662f" stroke-opacity="0.15" />
+    <circle cx="907" cy="323" r="65" fill="none" stroke="#46662f" stroke-opacity="0.12" />
+    <circle cx="997" cy="220" r="20" fill="#f8d89a" />
+    <circle cx="907" cy="323" r="58" fill="#f5f4e7" />
+    <text x="907" y="343" fill="#607c3c" font-family="Arial, 'Noto Sans KR', sans-serif" font-size="54" font-weight="700" text-anchor="middle">와</text>
+  </g>
+
+  <text x="108" y="227" fill="#737a72" font-family="Arial, 'Noto Sans KR', sans-serif" font-size="15" letter-spacing="3">안녕하세요,</text>
+  <text x="101" y="330" fill="#19211c" font-family="Arial, 'Noto Sans KR', sans-serif" font-size="80" font-weight="700" letter-spacing="-5">와수이입니다.</text>
+
+  <text x="108" y="392" fill="#596058" font-family="Arial, 'Noto Sans KR', sans-serif" font-size="23">회사에서 엔지니어로 일하고 있어요.</text>
+  <text x="108" y="431" fill="#596058" font-family="Arial, 'Noto Sans KR', sans-serif" font-size="23">요즘은 AI 관제 대시보드를 배우는 중입니다.</text>
+
+  <rect x="108" y="478" width="190" height="42" rx="21" fill="#e7eddb" />
+  <text x="203" y="505" fill="#526b37" font-family="Arial, 'Noto Sans KR', sans-serif" font-size="17" font-weight="600" text-anchor="middle">좋아하는 운동 · 볼링</text>
+
+  <path d="M92 562h1016" stroke="#e3e5da" />
+  <text x="108" y="593" fill="#879080" font-family="Arial, sans-serif" font-size="12" letter-spacing="2">CURIOUS BY NATURE · WASUI</text>
+</svg>

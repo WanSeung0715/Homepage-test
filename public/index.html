@@ -1,0 +1,1081 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="엔지니어로 일하는 와수이입니다. 요즘 AI 관제 대시보드를 배우고 있고, 좋아하는 운동은 볼링입니다."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:site_name" content="와수이" />
+    <meta property="og:title" content="와수이 | 엔지니어 · AI 관제 대시보드" />
+    <meta
+      property="og:description"
+      content="엔지니어로 일하는 와수이입니다. 요즘 AI 관제 대시보드를 배우고 있고, 좋아하는 운동은 볼링입니다."
+    />
+    <meta property="og:image" content="/og-image.svg" />
+    <meta property="og:image:type" content="image/svg+xml" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="초록빛 배경에 와수이의 소개와 관심사를 담은 카드" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="와수이 | 엔지니어 · AI 관제 대시보드" />
+    <meta
+      name="twitter:description"
+      content="엔지니어로 일하는 와수이입니다. 요즘 AI 관제 대시보드를 배우고 있고, 좋아하는 운동은 볼링입니다."
+    />
+    <meta name="twitter:image" content="/og-image.svg" />
+    <meta name="theme-color" content="#f8f7f3" />
+    <title>와수이 | 엔지니어 · AI 관제 대시보드</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --paper: #f8f7f3;
+        --ink: #19211c;
+        --muted: #737a72;
+        --green: #c9ed77;
+        --line: #e7e7de;
+        --orange: #e89462;
+        font-family: "Manrope", "Noto Sans KR", sans-serif;
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        scroll-behavior: smooth;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-width: 320px;
+        margin: 0;
+        background:
+          radial-gradient(ellipse at 94% 5%, rgb(224 235 192 / 35%), transparent 32rem),
+          var(--paper);
+        color: var(--ink);
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .page-shell {
+        width: min(100% - 64px, 1120px);
+        margin-inline: auto;
+      }
+
+      .topbar {
+        height: 88px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .brand,
+      .nav-link,
+      .eyebrow,
+      .tag,
+      .section-index,
+      .info-label,
+      .footer-note {
+        font-family: "DM Mono", "Noto Sans KR", monospace;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: -0.02em;
+      }
+
+      .brand-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #83aa45;
+        box-shadow: 0 0 0 4px rgb(131 170 69 / 14%);
+      }
+
+      .nav-link {
+        color: var(--muted);
+        font-size: 12px;
+        text-decoration-color: transparent;
+        text-underline-offset: 5px;
+        transition: color 180ms ease, text-decoration-color 180ms ease;
+      }
+
+      .nav-link:hover {
+        color: var(--ink);
+        text-decoration-color: currentColor;
+      }
+
+      main {
+        padding-block: 82px 110px;
+      }
+
+      .hero {
+        min-height: 416px;
+        display: grid;
+        grid-template-columns: 1fr 285px;
+        align-items: center;
+        gap: 76px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        margin: 0 0 27px;
+        color: var(--muted);
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        width: 24px;
+        height: 1px;
+        background: #9aac79;
+        content: "";
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(59px, 9vw, 104px);
+        font-weight: 700;
+        letter-spacing: -0.105em;
+        line-height: 0.99;
+      }
+
+      h1 span {
+        display: block;
+        margin-top: 13px;
+        color: #729340;
+        font-size: 0.69em;
+        letter-spacing: -0.075em;
+      }
+
+      .hero-description {
+        margin: 28px 0 0;
+        color: #596058;
+        font-size: 15px;
+        line-height: 1.9;
+        word-break: keep-all;
+      }
+
+      .hero-description strong {
+        color: var(--ink);
+        font-weight: 600;
+      }
+
+      .portrait-card {
+        position: relative;
+        isolation: isolate;
+        width: 252px;
+        aspect-ratio: 0.88;
+        justify-self: end;
+        overflow: hidden;
+        border: 1px solid rgb(25 33 28 / 8%);
+        border-radius: 48% 48% 24px 24px;
+        background:
+          radial-gradient(ellipse at 50% 41%, #eef1dc 0 24%, transparent 24.5%),
+          linear-gradient(145deg, #e4edcf, #c7daa8 62%, #c6d6b6);
+      }
+
+      .portrait-orbit {
+        position: absolute;
+        z-index: -1;
+        top: 16%;
+        left: 5%;
+        width: 90%;
+        aspect-ratio: 1;
+        border: 1px solid rgb(70 102 47 / 20%);
+        border-radius: 50%;
+      }
+
+      .portrait-orbit::before,
+      .portrait-orbit::after {
+        position: absolute;
+        border: 1px solid rgb(70 102 47 / 15%);
+        border-radius: 50%;
+        content: "";
+      }
+
+      .portrait-orbit::before {
+        inset: 11%;
+      }
+
+      .portrait-orbit::after {
+        inset: 22%;
+      }
+
+      .portrait-sun {
+        position: absolute;
+        top: 14%;
+        right: 12%;
+        width: 29px;
+        height: 29px;
+        border-radius: 50%;
+        background: #f8d89a;
+        box-shadow: 0 0 40px rgb(248 216 154 / 74%);
+      }
+
+      .portrait-monogram {
+        position: absolute;
+        top: 29%;
+        left: 50%;
+        width: 112px;
+        height: 112px;
+        display: grid;
+        place-items: center;
+        transform: translateX(-50%);
+        border: 1px solid rgb(25 33 28 / 10%);
+        border-radius: 50%;
+        background: #f5f4e7;
+        color: #607c3c;
+        font-size: 48px;
+        font-weight: 700;
+        letter-spacing: -0.1em;
+        box-shadow: 0 16px 42px rgb(49 72 37 / 12%);
+      }
+
+      .portrait-caption {
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+        left: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #496536;
+        font-family: "DM Mono", "Noto Sans KR", monospace;
+        font-size: 10px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+      }
+
+      .content-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 76px;
+        margin-top: 91px;
+        padding-top: 33px;
+        border-top: 1px solid var(--line);
+      }
+
+      .section-index {
+        margin: 0 0 25px;
+        color: #879080;
+        font-size: 10px;
+        letter-spacing: 0.09em;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 23px;
+        font-weight: 600;
+        letter-spacing: -0.06em;
+      }
+
+      .intro-copy {
+        max-width: 460px;
+        margin: 17px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 2;
+        word-break: keep-all;
+      }
+
+      .info-list {
+        margin: 19px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .info-row {
+        display: grid;
+        grid-template-columns: 102px 1fr;
+        gap: 15px;
+        padding-block: 15px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .info-label {
+        padding-top: 2px;
+        color: #8a9086;
+        font-size: 10px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .info-value {
+        color: #333b33;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 1.75;
+        word-break: keep-all;
+      }
+
+      .learning-card {
+        position: relative;
+        min-height: 193px;
+        margin-top: 21px;
+        overflow: hidden;
+        padding: 23px 22px;
+        border: 1px solid #e7e9d9;
+        border-radius: 7px;
+        background: linear-gradient(135deg, #f0f2e7, #f3f0e3);
+      }
+
+      .learning-card::after {
+        position: absolute;
+        right: -25px;
+        bottom: -61px;
+        width: 170px;
+        height: 170px;
+        border: 1px solid rgb(127 148 97 / 17%);
+        border-radius: 50%;
+        box-shadow: 0 0 0 18px rgb(127 148 97 / 5%), 0 0 0 38px rgb(127 148 97 / 5%);
+        content: "";
+      }
+
+      .learning-topline {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .tag {
+        display: inline-block;
+        padding: 5px 8px;
+        border: 1px solid #cfd9bb;
+        border-radius: 3px;
+        color: #627c46;
+        font-size: 9px;
+        letter-spacing: 0.035em;
+      }
+
+      .learning-symbol {
+        color: #869372;
+        font-size: 13px;
+      }
+
+      .learning-card h3 {
+        margin: 22px 0 8px;
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: -0.055em;
+      }
+
+      .learning-card p {
+        max-width: 300px;
+        margin: 0;
+        color: #777e70;
+        font-size: 11px;
+        line-height: 1.85;
+        word-break: keep-all;
+      }
+
+      .hobby-card {
+        position: relative;
+        display: flex;
+        min-height: 142px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        margin-top: 21px;
+        overflow: hidden;
+        padding: 23px 22px;
+        border: 1px solid #eae4dd;
+        border-radius: 7px;
+        background: linear-gradient(120deg, #f2eeea, #f2e9df);
+      }
+
+      .hobby-card h3 {
+        margin: 0 0 7px;
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: -0.055em;
+      }
+
+      .hobby-card p {
+        margin: 0;
+        color: #858077;
+        font-size: 11px;
+      }
+
+      .guestbook {
+        max-width: 740px;
+        margin: 83px auto 0;
+        padding-top: 32px;
+        border-top: 1px solid var(--line);
+        scroll-margin-top: 30px;
+      }
+
+      .guestbook-intro {
+        margin: 12px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.9;
+        word-break: keep-all;
+      }
+
+      .guestbook-form {
+        margin-top: 23px;
+        padding: 21px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: rgb(255 255 255 / 46%);
+      }
+
+      .guestbook-fields {
+        display: grid;
+        grid-template-columns: 82px minmax(0, 1fr) 94px;
+        align-items: center;
+        gap: 13px 14px;
+      }
+
+      .guestbook-label {
+        color: #747b70;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .guestbook-input {
+        width: 100%;
+        min-width: 0;
+        padding: 11px 12px;
+        border: 1px solid #e3e5dc;
+        border-radius: 4px;
+        background: #fffefa;
+        color: var(--ink);
+        font: inherit;
+        font-size: 12px;
+      }
+
+      .guestbook-input:invalid {
+        border-color: #e5b6a3;
+      }
+
+      .guestbook-password-help {
+        grid-column: 2 / 4;
+        margin: -6px 0 0;
+        color: #858b80;
+        font-size: 10px;
+        line-height: 1.6;
+      }
+
+      .guestbook-input:focus-visible,
+      .guestbook-submit:focus-visible {
+        outline: 2px solid #83aa45;
+        outline-offset: 3px;
+      }
+
+      .guestbook-message {
+        min-height: 91px;
+        resize: vertical;
+      }
+
+      .guestbook-submit-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 15px;
+      }
+
+      .guestbook-status {
+        margin: 0;
+        color: #858b80;
+        font-size: 10px;
+        line-height: 1.7;
+      }
+
+      .guestbook-submit {
+        flex: 0 0 auto;
+        padding: 10px 14px;
+        border: 0;
+        border-radius: 4px;
+        background: #526b37;
+        color: #fff;
+        cursor: pointer;
+        font: inherit;
+        font-size: 11px;
+        font-weight: 600;
+        transition: background 160ms ease, opacity 160ms ease;
+      }
+
+      .guestbook-submit:hover {
+        background: #40552a;
+      }
+
+      .guestbook-submit:disabled {
+        cursor: wait;
+        opacity: 0.65;
+      }
+
+      .guestbook-list {
+        display: grid;
+        gap: 10px;
+        margin: 18px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .guestbook-entry,
+      .guestbook-empty {
+        padding: 16px 18px;
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        background: rgb(255 255 255 / 38%);
+      }
+
+      .guestbook-entry-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 14px;
+      }
+
+      .guestbook-entry-name {
+        margin: 0;
+        color: #465d33;
+        font-size: 12px;
+        font-weight: 700;
+        overflow-wrap: anywhere;
+      }
+
+      .guestbook-entry-date {
+        flex: 0 0 auto;
+        color: #92968e;
+        font-family: "DM Mono", "Noto Sans KR", monospace;
+        font-size: 9px;
+      }
+
+      .guestbook-entry-message {
+        margin: 9px 0 0;
+        color: #596058;
+        font-size: 12px;
+        line-height: 1.8;
+        overflow-wrap: anywhere;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .guestbook-entry-actions {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .guestbook-action {
+        min-height: 30px;
+        padding: 6px 10px;
+        border: 1px solid #e2e5d9;
+        border-radius: 4px;
+        background: #fffefa;
+        color: #58634c;
+        cursor: pointer;
+        font: inherit;
+        font-size: 10px;
+        transition: background 150ms ease, border-color 150ms ease;
+      }
+
+      .guestbook-action:hover {
+        border-color: #bcc9a7;
+        background: #f2f5eb;
+      }
+
+      .guestbook-like {
+        color: #8a634d;
+      }
+
+      .guestbook-like-count {
+        margin-left: 3px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .guestbook-like:disabled,
+      .guestbook-action:disabled {
+        cursor: wait;
+        opacity: 0.6;
+      }
+
+      .guestbook-empty {
+        color: #858b80;
+        font-size: 11px;
+        line-height: 1.8;
+      }
+
+      .bowling-ball {
+        position: relative;
+        flex: 0 0 auto;
+        width: 75px;
+        height: 75px;
+        border: 1px solid rgb(111 75 52 / 17%);
+        border-radius: 50%;
+        background: radial-gradient(circle at 31% 24%, #f1c19c, #df996e 55%, #cb815b);
+        box-shadow: inset -8px -9px 16px rgb(120 65 36 / 12%), 0 8px 19px rgb(94 72 58 / 12%);
+        transform: rotate(-16deg);
+      }
+
+      .bowling-ball span {
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: rgb(100 57 39 / 52%);
+      }
+
+      .bowling-ball span:nth-child(1) { top: 27px; left: 36px; }
+      .bowling-ball span:nth-child(2) { top: 37px; left: 28px; }
+      .bowling-ball span:nth-child(3) { top: 39px; left: 42px; }
+
+      footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding-block: 22px 30px;
+        border-top: 1px solid var(--line);
+      }
+
+      .footer-note {
+        margin: 0;
+        color: #94988f;
+        font-size: 9px;
+        letter-spacing: 0.045em;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+
+      @media (max-width: 700px) {
+        .page-shell {
+          width: min(100% - 40px, 500px);
+        }
+
+        .topbar {
+          height: 70px;
+        }
+
+        main {
+          padding-block: 48px 70px;
+        }
+
+        .hero {
+          min-height: 0;
+          grid-template-columns: 1fr;
+          gap: 35px;
+        }
+
+        .hero-copy {
+          order: 1;
+        }
+
+        .portrait-card {
+          order: 0;
+          width: 162px;
+          justify-self: start;
+          border-radius: 45% 45% 18px 18px;
+        }
+
+        .portrait-monogram {
+          top: 29%;
+          width: 77px;
+          height: 77px;
+          font-size: 34px;
+        }
+
+        .portrait-caption {
+          right: 13px;
+          bottom: 14px;
+          left: 13px;
+          font-size: 8px;
+        }
+
+        .eyebrow {
+          margin-bottom: 19px;
+        }
+
+        h1 {
+          font-size: clamp(57px, 14vw, 78px);
+        }
+
+        .hero-description {
+          margin-top: 21px;
+          font-size: 13px;
+        }
+
+        .content-grid {
+          grid-template-columns: 1fr;
+          gap: 43px;
+          margin-top: 56px;
+          padding-top: 26px;
+        }
+
+        .section-index {
+          margin-bottom: 17px;
+        }
+
+        footer {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 9px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .guestbook {
+          margin-top: 57px;
+          padding-top: 26px;
+        }
+
+        .guestbook-form {
+          padding: 15px;
+        }
+
+        .guestbook-fields {
+          grid-template-columns: 1fr;
+          gap: 8px;
+        }
+
+        .guestbook-submit-row {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="#home" aria-label="와수이 소개 페이지 처음으로">
+          <span class="brand-dot" aria-hidden="true"></span>
+          <span>WASUI</span>
+        </a>
+        <a class="nav-link" href="#about">GET TO KNOW ME ↗</a>
+      </header>
+
+      <main id="home">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <p class="eyebrow">Engineer · Always learning</p>
+            <h1 id="hero-title">안녕하세요,<span>와수이입니다.</span></h1>
+            <p class="hero-description">
+              회사에서 <strong>엔지니어</strong>로 일하며,
+              새로운 가능성을 찾아가고 있어요.<br />
+              요즘은 <strong>AI 관제 대시보드</strong>를 배우는 중입니다.
+            </p>
+          </div>
+
+          <div class="portrait-card" role="img" aria-label="와수이를 나타내는 초록빛 그래픽과 이름 이니셜">
+            <div class="portrait-orbit" aria-hidden="true"></div>
+            <div class="portrait-sun" aria-hidden="true"></div>
+            <div class="portrait-monogram" aria-hidden="true">승</div>
+            <div class="portrait-caption" aria-hidden="true">
+              <span>In progress</span>
+              <span>Seoul · KR</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="content-grid" id="about" aria-label="와수이 소개">
+          <article>
+            <p class="section-index">01 — A LITTLE ABOUT ME</p>
+            <h2>일하는 것도, 배우는 것도</h2>
+            <p class="intro-copy">
+              좋은 답을 만들기 위해 계속 배우고 시도합니다. 지금은 엔지니어로 일하면서
+              AI와 대시보드가 만나는 지점을 탐구하고 있어요.
+            </p>
+            <ul class="info-list">
+              <li class="info-row">
+                <span class="info-label">NAME</span>
+                <span class="info-value">와수이</span>
+              </li>
+              <li class="info-row">
+                <span class="info-label">BIRTHDAY</span>
+                <span class="info-value"><time datetime="1998-11-23">1998년 11월 23일</time></span>
+              </li>
+              <li class="info-row">
+                <span class="info-label">NOW</span>
+                <span class="info-value">회사에서 엔지니어로 근무 중</span>
+              </li>
+            </ul>
+          </article>
+
+          <div>
+            <article>
+              <p class="section-index">02 — CURRENTLY LEARNING</p>
+              <h2>요즘 관심 있는 것</h2>
+              <div class="learning-card">
+                <div class="learning-topline">
+                  <span class="tag">LEARNING IN PROGRESS</span>
+                  <span class="learning-symbol" aria-hidden="true">✳</span>
+                </div>
+                <h3>AI 관제 대시보드</h3>
+                <p>데이터와 AI를 연결해 한눈에 이해하고 활용할 수 있는 대시보드를 배우고 있어요.</p>
+              </div>
+            </article>
+
+            <article style="margin-top: 38px">
+              <p class="section-index">03 — OFF THE CLOCK</p>
+              <h2>즐겨 하는 운동</h2>
+              <div class="hobby-card">
+                <div>
+                  <h3>볼링 🎳</h3>
+                  <p>핀을 향해 굴리는 순간의 집중을 좋아해요.</p>
+                </div>
+                <div class="bowling-ball" aria-hidden="true"><span></span><span></span><span></span></div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="guestbook" id="guestbook" aria-labelledby="guestbook-title">
+          <p class="section-index">04 — LEAVE A NOTE</p>
+          <h2 id="guestbook-title">방명록</h2>
+          <p class="guestbook-intro">와수이에게 짧은 인사를 남겨주세요. 이름과 메시지는 공개되며, 비밀번호는 수정·삭제 확인에만 사용합니다.</p>
+
+          <form class="guestbook-form" id="guestbook-form">
+            <div class="guestbook-fields">
+              <label class="guestbook-label" for="guestbook-name">이름</label>
+              <input class="guestbook-input" id="guestbook-name" name="name" type="text" maxlength="40" autocomplete="nickname" placeholder="이름 또는 닉네임" required />
+              <span aria-hidden="true"></span>
+              <label class="guestbook-label" for="guestbook-message">메시지</label>
+              <textarea class="guestbook-input guestbook-message" id="guestbook-message" name="message" maxlength="500" rows="3" placeholder="따뜻한 인사를 남겨주세요" required></textarea>
+              <span aria-hidden="true"></span>
+              <label class="guestbook-label" for="guestbook-password">비밀번호</label>
+              <input class="guestbook-input" id="guestbook-password" name="password" type="password" minlength="4" maxlength="9" pattern="[!-~]{4,9}" autocomplete="new-password" placeholder="영문·숫자·기호 4~9자" required />
+              <p class="guestbook-password-help">영문·숫자·기호 4~9자. 수정·삭제할 때 필요해요. 비밀번호는 공개되지 않고 복구할 수 없어요.</p>
+            </div>
+            <div class="guestbook-submit-row">
+              <p class="guestbook-status" id="guestbook-status" role="status" aria-live="polite">이름과 메시지는 공개 방명록에 표시됩니다.</p>
+              <button class="guestbook-submit" id="guestbook-submit" type="submit">방명록 남기기 <span aria-hidden="true">↗</span></button>
+            </div>
+          </form>
+
+          <p class="guestbook-intro">공감은 누구나 누를 수 있어요. 반복 클릭은 IP별 횟수 제한으로 완화합니다.</p>
+          <ol class="guestbook-list" id="guestbook-list" aria-live="polite" aria-label="방명록 메시지">
+            <li class="guestbook-empty">방명록을 불러오는 중입니다.</li>
+          </ol>
+        </section>
+      </main>
+
+      <footer>
+        <a class="brand" href="#home" aria-label="페이지 처음으로">
+          <span class="brand-dot" aria-hidden="true"></span>
+          <span>와수이</span>
+        </a>
+        <p class="footer-note">MADE WITH CURIOSITY · © WASUI</p>
+      </footer>
+    </div>
+    <script>
+      (() => {
+        const form = document.getElementById("guestbook-form");
+        const list = document.getElementById("guestbook-list");
+        const status = document.getElementById("guestbook-status");
+        const submit = document.getElementById("guestbook-submit");
+
+        const showStatus = (message, isError = false) => {
+          status.textContent = message;
+          status.dataset.state = isError ? "error" : "success";
+        };
+
+        const sendJson = async (url, method, body) => {
+          const response = await fetch(url, {
+            method,
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            body: JSON.stringify(body),
+          });
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.error || "요청을 처리하지 못했습니다.");
+          return data;
+        };
+
+        const createActionButton = (label, className, onClick) => {
+          const button = document.createElement("button");
+          button.className = `guestbook-action ${className}`;
+          button.type = "button";
+          button.textContent = label;
+          button.addEventListener("click", onClick);
+          return button;
+        };
+
+        const manageEntry = async (entry, action) => {
+          const verb = action === "edit" ? "수정" : "삭제";
+          const password = window.prompt(`${verb} 비밀번호를 입력해주세요. (4~9자)`);
+          if (password === null) return;
+          if (password.length < 4 || password.length > 9 || !/^[\x21-\x7E]+$/.test(password)) {
+            showStatus("비밀번호는 영문·숫자·기호 4~9자로 입력해주세요.", true);
+            return;
+          }
+
+          try {
+            if (action === "delete") {
+              if (!window.confirm("이 방명록을 삭제할까요? 삭제한 글은 복구할 수 없습니다.")) return;
+              await sendJson("/api/guestbook", "DELETE", { id: entry.id, password });
+              showStatus("방명록을 삭제했습니다.");
+            } else {
+              const message = window.prompt("수정할 메시지를 입력해주세요. (최대 500자)", entry.message);
+              if (message === null) return;
+              if (!message.trim() || message.trim().length > 500) {
+                showStatus("메시지는 1~500자로 입력해주세요.", true);
+                return;
+              }
+              await sendJson("/api/guestbook", "PATCH", {
+                id: entry.id,
+                password,
+                message: message.trim(),
+              });
+              showStatus("방명록을 수정했습니다.");
+            }
+            await loadEntries();
+          } catch (error) {
+            showStatus(error instanceof Error ? error.message : "요청을 처리하지 못했습니다.", true);
+          }
+        };
+
+        const likeEntry = async (entry, button, count) => {
+          button.disabled = true;
+          try {
+            const data = await sendJson("/api/guestbook", "POST", { action: "like", id: entry.id });
+            count.textContent = String(data.likes);
+            showStatus("공감을 보냈습니다.");
+          } catch (error) {
+            showStatus(error instanceof Error ? error.message : "공감을 등록하지 못했습니다.", true);
+          } finally {
+            button.disabled = false;
+          }
+        };
+
+        const renderEntries = (entries) => {
+          if (!entries.length) {
+            list.replaceChildren();
+            const empty = document.createElement("li");
+            empty.className = "guestbook-empty";
+            empty.textContent = "아직 방명록이 없어요. 첫 인사를 남겨주세요!";
+            list.append(empty);
+            return;
+          }
+
+          const fragment = document.createDocumentFragment();
+          for (const entry of entries) {
+            const item = document.createElement("li");
+            item.className = "guestbook-entry";
+
+            const header = document.createElement("div");
+            header.className = "guestbook-entry-header";
+            const name = document.createElement("h3");
+            name.className = "guestbook-entry-name";
+            name.textContent = entry.name;
+            const time = document.createElement("time");
+            time.className = "guestbook-entry-date";
+            time.dateTime = entry.createdAt;
+            const date = new Date(entry.createdAt);
+            time.textContent = Number.isNaN(date.getTime())
+              ? ""
+              : new Intl.DateTimeFormat("ko-KR", { dateStyle: "medium" }).format(date);
+            header.append(name, time);
+
+            const message = document.createElement("p");
+            message.className = "guestbook-entry-message";
+            message.textContent = entry.message;
+
+            const actions = document.createElement("div");
+            actions.className = "guestbook-entry-actions";
+            const likeCount = document.createElement("span");
+            likeCount.className = "guestbook-like-count";
+            likeCount.textContent = String(entry.likes || 0);
+            const likeButton = createActionButton("♡ 공감", "guestbook-like", () => likeEntry(entry, likeButton, likeCount));
+            likeButton.append(likeCount);
+            actions.append(likeButton);
+
+            if (entry.canManage) {
+              actions.append(
+                createActionButton("수정", "guestbook-edit", () => manageEntry(entry, "edit")),
+                createActionButton("삭제", "guestbook-delete", () => manageEntry(entry, "delete")),
+              );
+            }
+
+            item.append(header, message, actions);
+            fragment.append(item);
+          }
+          list.replaceChildren(fragment);
+        };
+
+        const loadEntries = async () => {
+          try {
+            const response = await fetch("/api/guestbook", {
+              headers: { Accept: "application/json" },
+            });
+            if (!response.ok) throw new Error("방명록을 불러오지 못했습니다.");
+            const data = await response.json();
+            renderEntries(data.entries);
+          } catch {
+            const empty = document.createElement("li");
+            empty.className = "guestbook-empty";
+            empty.textContent = "방명록을 불러올 수 없습니다. 잠시 후 다시 방문해주세요.";
+            list.replaceChildren(empty);
+          }
+        };
+
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          if (!form.reportValidity()) return;
+
+          const fields = new FormData(form);
+          const name = String(fields.get("name") || "").trim();
+          const message = String(fields.get("message") || "").trim();
+          if (!name || !message) {
+            showStatus("이름과 메시지를 모두 입력해주세요.", true);
+            return;
+          }
+
+          submit.disabled = true;
+          showStatus("방명록을 등록하고 있어요…");
+          try {
+            const password = String(fields.get("password") || "");
+            await sendJson("/api/guestbook", "POST", { name, message, password });
+            form.reset();
+            showStatus("방명록을 남겨주셔서 고맙습니다!");
+            await loadEntries();
+          } catch (error) {
+            showStatus(error instanceof Error
+              ? error.message
+              : "방명록을 등록하지 못했습니다.", true);
+          } finally {
+            submit.disabled = false;
+          }
+        });
+
+        loadEntries();
+      })();
+    </script>
+  </body>
+</html>
