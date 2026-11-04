@@ -9,7 +9,7 @@ const MAX_MESSAGE_LENGTH = 500;
 const MAX_BODY_BYTES = 4096;
 const MIN_PASSWORD_LENGTH = 4;
 const MAX_PASSWORD_LENGTH = 9;
-const PASSWORD_ITERATIONS = 210000;
+const PASSWORD_ITERATIONS = 100000;
 const PAGE_SIZE = 50;
 const RATE_WINDOW_SECONDS = 3600;
 const RATE_LIMITS = { manage: 10, like: 60 };
@@ -133,9 +133,7 @@ async function handlePost(request, env, payload) {
     return jsonResponse({ error: "이름은 1~40자, 메시지는 1~500자, 비밀번호는 영문·숫자·기호 4~9자로 입력해주세요." }, 400);
   }
   try {
-    let stage = "password-hash";
     const credential = await createPasswordHash(payload.password);
-    stage = "d1-insert";
     const row = await env.DB.prepare(
       "INSERT INTO guestbook_entries (name, message, password_salt, password_hash) VALUES (?, ?, ?, ?) RETURNING id, name, message, created_at, likes",
     ).bind(name, message, credential.salt, credential.hash).first();
@@ -143,13 +141,8 @@ async function handlePost(request, env, payload) {
       id: row.id, name: row.name, message: row.message, createdAt: `${row.created_at}Z`,
       likes: row.likes, canManage: true,
     } }, 201);
-  } catch (error) {
-    console.error("guestbook insert failed", error instanceof Error ? error.message : "unknown error");
-    return jsonResponse({
-      error: "방명록을 등록하지 못했습니다. DB 마이그레이션 설정을 확인해주세요.",
-      diagnostic: `${error instanceof Error ? error.name : "UnknownError"}:${error instanceof Error ? error.message : "unknown"}`,
-      stage,
-    }, 500);
+  } catch {
+    return jsonResponse({ error: "방명록을 등록하지 못했습니다. 잠시 후 다시 시도해주세요." }, 500);
   }
 }
 
