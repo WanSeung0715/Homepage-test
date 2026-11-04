@@ -6,7 +6,7 @@
 
 - `public/_worker.js`: Pages Advanced Mode Worker. `/api/guestbook` 요청은 D1/KV를 사용하고 나머지는 `env.ASSETS.fetch()`로 정적 파일에 전달합니다. 이 Worker가 `public/` 빌드 출력 안에 있어 Pages Git 빌드에 포함됩니다.
 - `migrations/`: D1 방명록 테이블과 버전별 마이그레이션.
-- `wrangler.toml`: Pages D1/KV 바인딩. 파일의 ID는 로컬 검증용 자리표시자입니다.
+- `wrangler.toml`: Pages Advanced Mode, 실제 Production D1/KV 바인딩, Preview/Production 환경 설정.
 - `index.html`: 반응형 방명록 화면.
 - `public/`: Pages 정적 빌드 출력(HTML, OG 이미지, Advanced Mode `_worker.js`). `_worker.js`가 API 라우팅과 static assets 전달을 모두 처리합니다.
 
@@ -21,22 +21,17 @@ npm.cmd exec --yes --package=wrangler -- wrangler d1 migrations apply homepage-t
 npm.cmd exec --yes --package=wrangler -- wrangler pages dev public
 ```
 
-Wrangler는 `public/`의 정적 파일과 `functions/`의 Pages Functions, SQLite 기반 로컬 D1을 실행하며, 로컬 데이터베이스 파일은 `.wrangler/`에 둡니다. 이 디렉터리는 Git에 커밋하지 않습니다. 로컬 `sqlite3` CLI는 데이터베이스를 관리하는 도구일 뿐 공개 Cloudflare 사이트에서 접근할 수 있는 DB 서버가 아닙니다.
+Wrangler는 `public/`의 정적 파일과 Advanced Mode `public/_worker.js`, SQLite 기반 로컬 D1/KV를 실행하며, 로컬 데이터베이스 파일은 `.wrangler/`에 둡니다. 이 디렉터리는 Git에 커밋하지 않습니다. 로컬 `sqlite3` CLI는 데이터베이스를 관리하는 도구일 뿐 공개 Cloudflare 사이트에서 접근할 수 있는 DB 서버가 아닙니다.
 
-## Cloudflare Pages 배포 설정
+## Cloudflare Pages 배포
 
-1. Cloudflare Dashboard의 **Workers & Pages → D1**에서 `homepage-test-guestbook` 데이터베이스를 만들고 실제 `database_id`를 받습니다.
-2. Cloudflare Dashboard의 **Workers & Pages → KV**에서 방명록 요청 제한용 KV namespace를 만듭니다.
-3. `wrangler.toml`의 `database_id`와 KV namespace `id`를 실제 Cloudflare ID로 바꿉니다. 자리표시자 상태로 원격에 배포하지 마세요.
-4. Pages 프로젝트의 **Settings → Bindings**에서 Production과 Preview 모두 아래 리소스를 연결합니다.
-   - D1 database: binding name `DB` → `homepage-test-guestbook`
-   - KV namespace: binding name `GUESTBOOK_LIMITER` → 위에서 만든 namespace
-5. 설정을 저장하고 Pages 프로젝트를 재배포한 뒤 원격 D1 마이그레이션을 적용합니다.
+- Cloudflare Pages: `https://homepage-test-4g7.pages.dev`
+- Production Worker bundle: `public/_worker.js` (Advanced Mode)
+- Production D1: `homepage-test-guestbook` (`DB` binding)
+- Production rate-limit KV: `homepage-test-guestbook-limiter` (`GUESTBOOK_LIMITER` binding)
+- D1 마이그레이션 `0001` 및 `0002`는 원격 Production D1에 적용되어 있습니다.
+- Production에서 글 작성 횟수 제한은 없고, 수정·삭제 시도는 IP당 시간당 10회, 공감은 시간당 60회로 제한됩니다.
 
-```powershell
-npm.cmd exec --yes --package=wrangler -- wrangler d1 migrations apply homepage-test-guestbook --remote
-```
+새 프로젝트의 일반 배포 절차와 보안 체크리스트는 [`HOMEPAGE_PLAYBOOK.md`](HOMEPAGE_PLAYBOOK.md)를 참고하세요. 다른 프로젝트에는 이 저장소의 Cloudflare resource ID를 재사용하지 않습니다.
 
-운영 마이그레이션 명령은 `wrangler.toml`의 실제 D1 ID를 넣은 뒤 실행합니다. 운영 D1에 접근 가능한 Cloudflare 계정으로 `wrangler login`이 필요합니다.
-
-로컬 D1의 글은 Cloudflare 운영 D1과 별개입니다. Pages 프로젝트 바인딩이 아직 설정되지 않았다면 API는 `503`을 반환합니다. 임의의 D1/KV ID를 운영 환경에 사용하지 마세요.
+로컬 Wrangler D1 데이터는 Production DB와 별개이며 `.wrangler/`에 저장되어 Git에 포함되지 않습니다.
