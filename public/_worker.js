@@ -133,7 +133,9 @@ async function handlePost(request, env, payload) {
     return jsonResponse({ error: "이름은 1~40자, 메시지는 1~500자, 비밀번호는 영문·숫자·기호 4~9자로 입력해주세요." }, 400);
   }
   try {
+    let stage = "password-hash";
     const credential = await createPasswordHash(payload.password);
+    stage = "d1-insert";
     const row = await env.DB.prepare(
       "INSERT INTO guestbook_entries (name, message, password_salt, password_hash) VALUES (?, ?, ?, ?) RETURNING id, name, message, created_at, likes",
     ).bind(name, message, credential.salt, credential.hash).first();
@@ -143,7 +145,11 @@ async function handlePost(request, env, payload) {
     } }, 201);
   } catch (error) {
     console.error("guestbook insert failed", error instanceof Error ? error.message : "unknown error");
-    return jsonResponse({ error: "방명록을 등록하지 못했습니다. DB 마이그레이션 설정을 확인해주세요." }, 500);
+    return jsonResponse({
+      error: "방명록을 등록하지 못했습니다. DB 마이그레이션 설정을 확인해주세요.",
+      diagnostic: `${error instanceof Error ? error.name : "UnknownError"}:${error instanceof Error ? error.message : "unknown"}`,
+      stage,
+    }, 500);
   }
 }
 
