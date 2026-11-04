@@ -2,14 +2,6 @@ name = "homepage-test"
 compatibility_date = "2026-10-01"
 pages_build_output_dir = "public"
 compatibility_flags = ["nodejs_compat"]
-vars = { GUESTBOOK_DISABLE_RATE_LIMIT = "true" }
-
-[env.production.vars]
-GUESTBOOK_DISABLE_RATE_LIMIT = "false"
-
-[env.preview.vars]
-GUESTBOOK_DISABLE_RATE_LIMIT = "false"
-
 [[d1_databases]]
 binding = "DB"
 database_name = "homepage-test-guestbook"
