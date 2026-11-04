@@ -141,7 +141,8 @@ async function handlePost(request, env, payload) {
       id: row.id, name: row.name, message: row.message, createdAt: `${row.created_at}Z`,
       likes: row.likes, canManage: true,
     } }, 201);
-  } catch {
+  } catch (error) {
+    console.error("guestbook insert failed", error instanceof Error ? error.message : "unknown error");
     return jsonResponse({ error: "방명록을 등록하지 못했습니다. DB 마이그레이션 설정을 확인해주세요." }, 500);
   }
 }
