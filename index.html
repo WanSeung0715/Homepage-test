@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="엔지니어 최승완의 자기소개. AI 관제 대시보드를 배우고, 볼링을 좋아합니다."
+    />
+    <meta name="theme-color" content="#f8f7f3" />
+    <title>최승완 — Engineer &amp; AI Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --paper: #f8f7f3;
+        --ink: #19211c;
+        --muted: #737a72;
+        --green: #c9ed77;
+        --line: #e7e7de;
+        --orange: #e89462;
+        font-family: "Manrope", "Noto Sans KR", sans-serif;
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        scroll-behavior: smooth;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-width: 320px;
+        margin: 0;
+        background:
+          radial-gradient(ellipse at 94% 5%, rgb(224 235 192 / 35%), transparent 32rem),
+          var(--paper);
+        color: var(--ink);
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .page-shell {
+        width: min(100% - 64px, 1120px);
+        margin-inline: auto;
+      }
+
+      .topbar {
+        height: 88px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .brand,
+      .nav-link,
+      .eyebrow,
+      .tag,
+      .section-index,
+      .info-label,
+      .footer-note {
+        font-family: "DM Mono", "Noto Sans KR", monospace;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: -0.02em;
+      }
+
+      .brand-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #83aa45;
+        box-shadow: 0 0 0 4px rgb(131 170 69 / 14%);
+      }
+
+      .nav-link {
+        color: var(--muted);
+        font-size: 12px;
+        text-decoration-color: transparent;
+        text-underline-offset: 5px;
+        transition: color 180ms ease, text-decoration-color 180ms ease;
+      }
+
+      .nav-link:hover {
+        color: var(--ink);
+        text-decoration-color: currentColor;
+      }
+
+      main {
+        padding-block: 82px 110px;
+      }
+
+      .hero {
+        min-height: 416px;
+        display: grid;
+        grid-template-columns: 1fr 285px;
+        align-items: center;
+        gap: 76px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        margin: 0 0 27px;
+        color: var(--muted);
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        width: 24px;
+        height: 1px;
+        background: #9aac79;
+        content: "";
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(59px, 9vw, 104px);
+        font-weight: 700;
+        letter-spacing: -0.105em;
+        line-height: 0.99;
+      }
+
+      h1 span {
+        display: block;
+        margin-top: 13px;
+        color: #729340;
+        font-size: 0.69em;
+        letter-spacing: -0.075em;
+      }
+
+      .hero-description {
+        margin: 28px 0 0;
+        color: #596058;
+        font-size: 15px;
+        line-height: 1.9;
+        word-break: keep-all;
+      }
+
+      .hero-description strong {
+        color: var(--ink);
+        font-weight: 600;
+      }
+
+      .portrait-card {
+        position: relative;
+        isolation: isolate;
+        width: 252px;
+        aspect-ratio: 0.88;
+        justify-self: end;
+        overflow: hidden;
+        border: 1px solid rgb(25 33 28 / 8%);
+        border-radius: 48% 48% 24px 24px;
+        background:
+          radial-gradient(ellipse at 50% 41%, #eef1dc 0 24%, transparent 24.5%),
+          linear-gradient(145deg, #e4edcf, #c7daa8 62%, #c6d6b6);
+      }
+
+      .portrait-orbit {
+        position: absolute;
+        z-index: -1;
+        top: 16%;
+        left: 5%;
+        width: 90%;
+        aspect-ratio: 1;
+        border: 1px solid rgb(70 102 47 / 20%);
+        border-radius: 50%;
+      }
+
+      .portrait-orbit::before,
+      .portrait-orbit::after {
+        position: absolute;
+        border: 1px solid rgb(70 102 47 / 15%);
+        border-radius: 50%;
+        content: "";
+      }
+
+      .portrait-orbit::before {
+        inset: 11%;
+      }
+
+      .portrait-orbit::after {
+        inset: 22%;
+      }
+
+      .portrait-sun {
+        position: absolute;
+        top: 14%;
+        right: 12%;
+        width: 29px;
+        height: 29px;
+        border-radius: 50%;
+        background: #f8d89a;
+        box-shadow: 0 0 40px rgb(248 216 154 / 74%);
+      }
+
+      .portrait-monogram {
+        position: absolute;
+        top: 29%;
+        left: 50%;
+        width: 112px;
+        height: 112px;
+        display: grid;
+        place-items: center;
+        transform: translateX(-50%);
+        border: 1px solid rgb(25 33 28 / 10%);
+        border-radius: 50%;
+        background: #f5f4e7;
+        color: #607c3c;
+        font-size: 48px;
+        font-weight: 700;
+        letter-spacing: -0.1em;
+        box-shadow: 0 16px 42px rgb(49 72 37 / 12%);
+      }
+
+      .portrait-caption {
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+        left: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #496536;
+        font-family: "DM Mono", "Noto Sans KR", monospace;
+        font-size: 10px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+      }
+
+      .content-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 76px;
+        margin-top: 91px;
+        padding-top: 33px;
+        border-top: 1px solid var(--line);
+      }
+
+      .section-index {
+        margin: 0 0 25px;
+        color: #879080;
+        font-size: 10px;
+        letter-spacing: 0.09em;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 23px;
+        font-weight: 600;
+        letter-spacing: -0.06em;
+      }
+
+      .intro-copy {
+        max-width: 460px;
+        margin: 17px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 2;
+        word-break: keep-all;
+      }
+
+      .info-list {
+        margin: 19px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .info-row {
+        display: grid;
+        grid-template-columns: 102px 1fr;
+        gap: 15px;
+        padding-block: 15px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .info-label {
+        padding-top: 2px;
+        color: #8a9086;
+        font-size: 10px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .info-value {
+        color: #333b33;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 1.75;
+        word-break: keep-all;
+      }
+
+      .learning-card {
+        position: relative;
+        min-height: 193px;
+        margin-top: 21px;
+        overflow: hidden;
+        padding: 23px 22px;
+        border: 1px solid #e7e9d9;
+        border-radius: 7px;
+        background: linear-gradient(135deg, #f0f2e7, #f3f0e3);
+      }
+
+      .learning-card::after {
+        position: absolute;
+        right: -25px;
+        bottom: -61px;
+        width: 170px;
+        height: 170px;
+        border: 1px solid rgb(127 148 97 / 17%);
+        border-radius: 50%;
+        box-shadow: 0 0 0 18px rgb(127 148 97 / 5%), 0 0 0 38px rgb(127 148 97 / 5%);
+        content: "";
+      }
+
+      .learning-topline {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .tag {
+        display: inline-block;
+        padding: 5px 8px;
+        border: 1px solid #cfd9bb;
+        border-radius: 3px;
+        color: #627c46;
+        font-size: 9px;
+        letter-spacing: 0.035em;
+      }
+
+      .learning-symbol {
+        color: #869372;
+        font-size: 13px;
+      }
+
+      .learning-card h3 {
+        margin: 22px 0 8px;
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: -0.055em;
+      }
+
+      .learning-card p {
+        max-width: 300px;
+        margin: 0;
+        color: #777e70;
+        font-size: 11px;
+        line-height: 1.85;
+        word-break: keep-all;
+      }
+
+      .hobby-card {
+        position: relative;
+        display: flex;
+        min-height: 142px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        margin-top: 21px;
+        overflow: hidden;
+        padding: 23px 22px;
+        border: 1px solid #eae4dd;
+        border-radius: 7px;
+        background: linear-gradient(120deg, #f2eeea, #f2e9df);
+      }
+
+      .hobby-card h3 {
+        margin: 0 0 7px;
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: -0.055em;
+      }
+
+      .hobby-card p {
+        margin: 0;
+        color: #858077;
+        font-size: 11px;
+      }
+
+      .bowling-ball {
+        position: relative;
+        flex: 0 0 auto;
+        width: 75px;
+        height: 75px;
+        border: 1px solid rgb(111 75 52 / 17%);
+        border-radius: 50%;
+        background: radial-gradient(circle at 31% 24%, #f1c19c, #df996e 55%, #cb815b);
+        box-shadow: inset -8px -9px 16px rgb(120 65 36 / 12%), 0 8px 19px rgb(94 72 58 / 12%);
+        transform: rotate(-16deg);
+      }
+
+      .bowling-ball span {
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: rgb(100 57 39 / 52%);
+      }
+
+      .bowling-ball span:nth-child(1) { top: 27px; left: 36px; }
+      .bowling-ball span:nth-child(2) { top: 37px; left: 28px; }
+      .bowling-ball span:nth-child(3) { top: 39px; left: 42px; }
+
+      footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding-block: 22px 30px;
+        border-top: 1px solid var(--line);
+      }
+
+      .footer-note {
+        margin: 0;
+        color: #94988f;
+        font-size: 9px;
+        letter-spacing: 0.045em;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+
+      @media (max-width: 700px) {
+        .page-shell {
+          width: min(100% - 40px, 500px);
+        }
+
+        .topbar {
+          height: 70px;
+        }
+
+        main {
+          padding-block: 48px 70px;
+        }
+
+        .hero {
+          min-height: 0;
+          grid-template-columns: 1fr;
+          gap: 35px;
+        }
+
+        .hero-copy {
+          order: 1;
+        }
+
+        .portrait-card {
+          order: 0;
+          width: 162px;
+          justify-self: start;
+          border-radius: 45% 45% 18px 18px;
+        }
+
+        .portrait-monogram {
+          top: 29%;
+          width: 77px;
+          height: 77px;
+          font-size: 34px;
+        }
+
+        .portrait-caption {
+          right: 13px;
+          bottom: 14px;
+          left: 13px;
+          font-size: 8px;
+        }
+
+        .eyebrow {
+          margin-bottom: 19px;
+        }
+
+        h1 {
+          font-size: clamp(57px, 14vw, 78px);
+        }
+
+        .hero-description {
+          margin-top: 21px;
+          font-size: 13px;
+        }
+
+        .content-grid {
+          grid-template-columns: 1fr;
+          gap: 43px;
+          margin-top: 56px;
+          padding-top: 26px;
+        }
+
+        .section-index {
+          margin-bottom: 17px;
+        }
+
+        footer {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 9px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="#home" aria-label="최승완 소개 페이지 처음으로">
+          <span class="brand-dot" aria-hidden="true"></span>
+          <span>CHOI SEUNGWAN</span>
+        </a>
+        <a class="nav-link" href="#about">GET TO KNOW ME ↗</a>
+      </header>
+
+      <main id="home">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <p class="eyebrow">Engineer · Always learning</p>
+            <h1 id="hero-title">안녕하세요,<span>최승완입니다.</span></h1>
+            <p class="hero-description">
+              회사에서 <strong>엔지니어</strong>로 일하며,
+              새로운 가능성을 찾아가고 있어요.<br />
+              요즘은 <strong>AI 관제 대시보드</strong>를 배우는 중입니다.
+            </p>
+          </div>
+
+          <div class="portrait-card" role="img" aria-label="최승완을 나타내는 초록빛 그래픽과 승완 이니셜">
+            <div class="portrait-orbit" aria-hidden="true"></div>
+            <div class="portrait-sun" aria-hidden="true"></div>
+            <div class="portrait-monogram" aria-hidden="true">승</div>
+            <div class="portrait-caption" aria-hidden="true">
+              <span>In progress</span>
+              <span>Seoul · KR</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="content-grid" id="about" aria-label="최승완 소개">
+          <article>
+            <p class="section-index">01 — A LITTLE ABOUT ME</p>
+            <h2>일하는 것도, 배우는 것도</h2>
+            <p class="intro-copy">
+              좋은 답을 만들기 위해 계속 배우고 시도합니다. 지금은 엔지니어로 일하면서
+              AI와 대시보드가 만나는 지점을 탐구하고 있어요.
+            </p>
+            <ul class="info-list">
+              <li class="info-row">
+                <span class="info-label">NAME</span>
+                <span class="info-value">최승완</span>
+              </li>
+              <li class="info-row">
+                <span class="info-label">BIRTHDAY</span>
+                <span class="info-value"><time datetime="1999-07-15">1999년 7월 15일</time></span>
+              </li>
+              <li class="info-row">
+                <span class="info-label">NOW</span>
+                <span class="info-value">회사에서 엔지니어로 근무 중</span>
+              </li>
+            </ul>
+          </article>
+
+          <div>
+            <article>
+              <p class="section-index">02 — CURRENTLY LEARNING</p>
+              <h2>요즘 관심 있는 것</h2>
+              <div class="learning-card">
+                <div class="learning-topline">
+                  <span class="tag">LEARNING IN PROGRESS</span>
+                  <span class="learning-symbol" aria-hidden="true">✳</span>
+                </div>
+                <h3>AI 관제 대시보드</h3>
+                <p>데이터와 AI를 연결해 한눈에 이해하고 활용할 수 있는 대시보드를 배우고 있어요.</p>
+              </div>
+            </article>
+
+            <article style="margin-top: 38px">
+              <p class="section-index">03 — OFF THE CLOCK</p>
+              <h2>즐겨 하는 운동</h2>
+              <div class="hobby-card">
+                <div>
+                  <h3>볼링 🎳</h3>
+                  <p>핀을 향해 굴리는 순간의 집중을 좋아해요.</p>
+                </div>
+                <div class="bowling-ball" aria-hidden="true"><span></span><span></span><span></span></div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <a class="brand" href="#home" aria-label="페이지 처음으로">
+          <span class="brand-dot" aria-hidden="true"></span>
+          <span>최승완</span>
+        </a>
+        <p class="footer-note">MADE WITH CURIOSITY · © CHOI SEUNGWAN</p>
+      </footer>
+    </div>
+  </body>
+</html>
