@@ -52,6 +52,7 @@ project/
 - 공개 페이지 URL을 알고 있으면 `og:url`과 canonical URL에 실제 절대 URL을 설정합니다. 도메인을 추측하지 않습니다.
 - 설명문은 페이지에 실제 있는 사실만 요약하고, 검색 키워드 반복이나 근거 없는 홍보 문구를 넣지 않습니다.
 - `im-not-ai` 같은 AI 윤문 스킬 저장소는 온라인 입력 웹서비스와 다릅니다. 공식 UI/API가 확인되지 않았다면 사용했다고 주장하지 않습니다.
+- Google Fonts는 실제 CSS에서 쓰는 family와 weight만 요청하고, `display=swap` 및 필요한 경우 `preconnect`를 사용합니다. 비동기 stylesheet 패턴은 첫 페인트를 앞당길 수 있지만 화면의 폰트 교체(FOUT)와 접근성을 확인한 후 적용합니다.
 
 ## 4. Cloudflare Pages의 Worker/DB 구조 선택
 
