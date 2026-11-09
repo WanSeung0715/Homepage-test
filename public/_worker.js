@@ -2,6 +2,10 @@ const JSON_HEADERS = {
   "Content-Type": "application/json; charset=utf-8",
   "Cache-Control": "no-store",
   "X-Content-Type-Options": "nosniff",
+  "X-Frame-Options": "DENY",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+  "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
 };
 
 const MAX_NAME_LENGTH = 40;
@@ -20,10 +24,15 @@ function jsonResponse(body, status = 200) {
 
 function normalizedText(value, maxLength) {
   if (typeof value !== "string") return null;
-  const normalized = value.normalize("NFC").trim();
+  const normalized = value.normalize("NFC").replace(/[\u200B-\u200D\u2060\uFEFF]/g, "").trim();
   if (!normalized || normalized.length > maxLength) return null;
   if (/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/.test(normalized)) return null;
   return normalized;
+}
+
+function visibleText(value) {
+  return typeof value === "string"
+    && /[\p{L}\p{N}]/u.test(value.replace(/[\u200B-\u200D\u2060\uFEFF\s\p{P}\p{S}]/gu, ""));
 }
 
 function validPassword(value) {
@@ -144,7 +153,7 @@ async function handleGet(request, env) {
 async function handlePost(request, env, payload) {
   const name = normalizedText(payload.name, MAX_NAME_LENGTH);
   const message = normalizedText(payload.message, MAX_MESSAGE_LENGTH);
-  if (!name || !message || !validPassword(payload.password)) {
+  if (!name || /[\r\n\t]/.test(name) || !visibleText(name) || !message || !visibleText(message) || !validPassword(payload.password)) {
     return jsonResponse({ error: "이름은 1~40자, 메시지는 1~500자, 비밀번호는 영문·숫자·기호 4~9자로 입력해주세요." }, 400);
   }
   try {
@@ -167,7 +176,7 @@ async function handleManage(request, env, method, payload) {
     return jsonResponse({ error: "방명록 번호와 영문·숫자·기호 4~9자 비밀번호를 확인해주세요." }, 400);
   }
   const message = method === "PATCH" ? normalizedText(payload.message, MAX_MESSAGE_LENGTH) : null;
-  if (method === "PATCH" && !message) return jsonResponse({ error: "메시지는 1~500자로 입력해주세요." }, 400);
+  if (method === "PATCH" && (!message || !visibleText(message))) return jsonResponse({ error: "메시지는 보이는 글자를 포함해 1~500자로 입력해주세요." }, 400);
   const limited = await enforceRateLimit(request, env, "manage");
   if (limited) return limited;
   try {

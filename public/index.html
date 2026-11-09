@@ -438,7 +438,9 @@
       }
 
       .guestbook-form {
+        width: min(100%, 720px);
         margin-top: 23px;
+        margin-inline: auto;
         padding: 21px;
         border: 1px solid var(--line);
         border-radius: 7px;
@@ -448,6 +450,8 @@
       .guestbook-fields {
         display: grid;
         grid-template-columns: 82px minmax(0, 1fr) 94px;
+        max-width: 680px;
+        margin-inline: auto;
         align-items: center;
         gap: 13px 14px;
       }
@@ -577,6 +581,40 @@
         overflow-wrap: anywhere;
         white-space: pre-wrap;
         word-break: break-word;
+      }
+
+      .guestbook-edit-form {
+        display: grid;
+        gap: 9px;
+        margin-top: 12px;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        background: #fbfbf6;
+      }
+
+      .guestbook-edit-textarea,
+      .guestbook-edit-password {
+        width: 100%;
+        padding: 10px 11px;
+        border: 1px solid #e3e5dc;
+        border-radius: 4px;
+        background: #fffefa;
+        color: var(--ink);
+        font: inherit;
+        font-size: 12px;
+      }
+
+      .guestbook-edit-textarea {
+        min-height: 96px;
+        resize: vertical;
+        line-height: 1.7;
+      }
+
+      .guestbook-edit-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
       }
 
       .guestbook-entry-actions {
@@ -991,8 +1029,75 @@
           return button;
         };
 
+        const openEditForm = (entry, item) => {
+          if (item.querySelector(".guestbook-edit-form")) return;
+          const editForm = document.createElement("form");
+          editForm.className = "guestbook-edit-form";
+          const message = document.createElement("textarea");
+          message.className = "guestbook-edit-textarea";
+          message.name = "message";
+          message.maxLength = 500;
+          message.required = true;
+          message.setAttribute("aria-label", "수정할 방명록 메시지");
+          message.value = entry.message;
+          const password = document.createElement("input");
+          password.className = "guestbook-edit-password";
+          password.name = "password";
+          password.type = "password";
+          password.minLength = 4;
+          password.maxLength = 9;
+          password.pattern = "[!-~]{4,9}";
+          password.autocomplete = "current-password";
+          password.required = true;
+          password.placeholder = "수정 비밀번호 (영문·숫자·기호 4~9자)";
+          password.setAttribute("aria-label", "수정 비밀번호");
+          const error = document.createElement("p");
+          error.className = "guestbook-status";
+          error.setAttribute("role", "status");
+          error.setAttribute("aria-live", "polite");
+          const actions = document.createElement("div");
+          actions.className = "guestbook-edit-actions";
+          const save = createActionButton("변경 저장", "guestbook-edit-save", () => {});
+          save.type = "submit";
+          const cancel = createActionButton("취소", "guestbook-edit-cancel", () => editForm.remove());
+          actions.append(save, cancel);
+          editForm.append(message, password, error, actions);
+          item.append(editForm);
+          message.focus();
+          editForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            if (!editForm.reportValidity()) return;
+            const value = message.value.trim();
+            if (!value) {
+              error.textContent = "메시지는 1~500자로 입력해주세요.";
+              return;
+            }
+            save.disabled = true;
+            error.textContent = "수정 내용을 저장하고 있어요…";
+            try {
+              await sendJson("/api/guestbook", "PATCH", {
+                id: entry.id,
+                password: password.value,
+                message: value,
+              });
+              showStatus("방명록을 수정했습니다.");
+              await loadEntries();
+            } catch (cause) {
+              error.textContent = cause instanceof Error ? cause.message : "수정하지 못했습니다. 다시 시도해주세요.";
+              save.disabled = false;
+              password.value = "";
+              password.focus();
+            }
+          });
+        };
+
         const manageEntry = async (entry, action) => {
           const verb = action === "edit" ? "수정" : "삭제";
+          if (action === "edit") {
+            const item = list.querySelector(`[data-entry-id="${entry.id}"]`);
+            if (item) openEditForm(entry, item);
+            return;
+          }
           const password = window.prompt(`${verb} 비밀번호를 입력해주세요. (4~9자)`);
           if (password === null) return;
           if (password.length < 4 || password.length > 9 || !/^[\x21-\x7E]+$/.test(password)) {
@@ -1005,19 +1110,6 @@
               if (!window.confirm("이 방명록을 삭제할까요? 삭제한 글은 복구할 수 없습니다.")) return;
               await sendJson("/api/guestbook", "DELETE", { id: entry.id, password });
               showStatus("방명록을 삭제했습니다.");
-            } else {
-              const message = window.prompt("수정할 메시지를 입력해주세요. (최대 500자)", entry.message);
-              if (message === null) return;
-              if (!message.trim() || message.trim().length > 500) {
-                showStatus("메시지는 1~500자로 입력해주세요.", true);
-                return;
-              }
-              await sendJson("/api/guestbook", "PATCH", {
-                id: entry.id,
-                password,
-                message: message.trim(),
-              });
-              showStatus("방명록을 수정했습니다.");
             }
             await loadEntries();
           } catch (error) {
@@ -1065,6 +1157,7 @@
           for (const entry of entries) {
             const item = document.createElement("li");
             item.className = "guestbook-entry";
+            item.dataset.entryId = String(entry.id);
 
             const header = document.createElement("div");
             header.className = "guestbook-entry-header";

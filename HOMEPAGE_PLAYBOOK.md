@@ -128,6 +128,7 @@ id = "<실제 Cloudflare KV namespace ID>"
 
 - 공개되는 이름/메시지임을 입력창 가까이에 알립니다.
 - 이름/메시지 최대 길이, JSON Content-Type, body byte 크기를 서버에서 검증합니다.
+- 이름에는 줄바꿈/탭을 허용하지 않고, 이름과 메시지에서 zero-width 문자만으로 된 값을 거부하는 이상값 테스트를 추가합니다. 메시지 줄바꿈은 요구사항에 맞게 유지할 수 있습니다.
 - SQL은 prepared statement와 bound parameters로만 실행합니다.
 - 글은 `textContent`로 렌더링합니다. `innerHTML`로 사용자 값을 삽입하지 않습니다.
 - 수정/삭제 비밀번호를 저장할 때 평문 저장 금지. 사용자마다 salt를 만들고 Web Crypto PBKDF2 등 Workers에서 지원하는 해시를 사용합니다.
@@ -135,6 +136,7 @@ id = "<실제 Cloudflare KV namespace ID>"
 - 비밀번호 글자 길이/허용 문자 규칙은 browser form과 Worker API에서 완전히 일치시킵니다. Cloudflare Workers의 PBKDF2 iteration 상한은 공식 문서에서 확인합니다.
 - 수정/삭제 시도와 공감은 IP rate limit을 검토합니다. 로그인이나 식별 토큰이 없으면 IP 제한은 “1인 1회”를 보장하지 않는다고 명시합니다.
 - API 오류는 사용자에게 일반 오류로 반환하고 내부 예외에는 비밀번호/요청 본문을 기록하지 않습니다.
+- Pages 정적 파일은 `public/_headers`, Worker API 응답은 Worker의 `Response` 헤더에서 각각 보안 헤더를 설정합니다. CSP는 inline CSS/JS를 유지하면 `unsafe-inline` 사용에 따른 보안 절충이 있으므로, 자산을 외부 파일로 분리할 수 있으면 허용 정책을 더 좁힙니다.
 - 공개 글을 누가/어떻게 삭제할지 관리 방법을 마련합니다.
 - 생성한 실제 비밀번호가 없는 기존 글은 수정/삭제할 수 없습니다. 마이그레이션 때 소유권을 임의로 만들지 않습니다.
 
