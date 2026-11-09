@@ -36,6 +36,10 @@ GitHub `main` 브랜치가 Cloudflare Pages에 연결되어 있습니다. 운영
 
 다음 홈페이지 제작 시 재사용할 구조·보안·검증 절차는 [`HOMEPAGE_PLAYBOOK.md`](HOMEPAGE_PLAYBOOK.md)를 참고하세요. 다른 프로젝트에서는 이 저장소의 ID와 리소스 이름을 그대로 쓰지 말고 새 값으로 설정합니다.
 
+## Google 검색 등록
+
+`public/robots.txt`는 공개 페이지 크롤링을 허용하고 API 경로는 제외하며, `public/sitemap.xml`은 정규 홈페이지 URL 한 개를 안내합니다. Pages 배포 후 `https://homepage-test-4g7.pages.dev/robots.txt`와 `https://homepage-test-4g7.pages.dev/sitemap.xml`에 실제 텍스트/유효한 XML이 노출되는지 확인합니다. Google Search Console에 사이트 속성을 등록하고 소유권을 확인한 뒤 `sitemap.xml` 경로를 제출해야 합니다. 속성 소유권 확인과 제출 상태는 Search Console에서 직접 확인해야 하며, 이 저장소의 파일 추가만으로 등록이 완료되는 것은 아닙니다.
+
 ## 윤문 참고
 
 README는 기능·사실·수치를 유지하면서 불필요한 표현을 줄여 정리했습니다. 참고한 `im-not-ai` 저장소는 온라인 변환 API가 아니라 코딩 에이전트용 한국어 윤문 스킬이므로, 웹 API를 호출했다고 표기하지 않았습니다.

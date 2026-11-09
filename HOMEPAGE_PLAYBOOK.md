@@ -54,6 +54,8 @@ project/
 - `im-not-ai` 같은 AI 윤문 스킬 저장소는 온라인 입력 웹서비스와 다릅니다. 공식 UI/API가 확인되지 않았다면 사용했다고 주장하지 않습니다.
 - Google Fonts는 실제 CSS에서 쓰는 family와 weight만 요청하고, `display=swap` 및 필요한 경우 `preconnect`를 사용합니다. 비동기 stylesheet 패턴은 첫 페인트를 앞당길 수 있지만 화면의 폰트 교체(FOUT)와 접근성을 확인한 후 적용합니다.
 
+Google 검색 등록이 필요하면 `robots.txt`와 XML sitemap을 배포 루트에 추가합니다. Sitemap에는 절대 canonical URL만 넣고 API 경로는 포함하지 않습니다. 배포 후 두 파일의 HTTP 응답/문법을 확인하고, Google Search Console 소유권이 검증된 속성에서 sitemap을 제출·상태 확인합니다. 파일만 배포한 것을 Search Console 등록/제출 완료로 표현하지 않습니다.
+
 ## 4. Cloudflare Pages의 Worker/DB 구조 선택
 
 ### 정적 페이지에 API/DB가 필요 없는 경우

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://homepage-test-4g7.pages.dev/sitemap.xml
