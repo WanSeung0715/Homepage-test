@@ -5,6 +5,14 @@
 - 홈페이지: <https://homepage-test-4g7.pages.dev>
 - GitHub 저장소: <https://github.com/WanSeung0715/Homepage-test>
 
+## 방문 통계
+
+Google Tag Manager 컨테이너(`GTM-KG8SFLHJ`)를 통해 Google Analytics 4 웹 스트림(`G-XETSWX91D3`)으로 페이지 조회를 측정합니다. Analytics 보고서에서 방문자 수와 국가별 집계를 확인하는 것이 목적이며, 홈페이지에서는 방명록 이름·내용·비밀번호를 분석 이벤트로 보내지 않습니다. 국가 정보는 Google Analytics가 네트워크 정보를 바탕으로 추정하는 대략적 지역 통계이며, 개인의 정확한 위치가 아닙니다.
+
+주의: 게시된 GTM 버전에는 `사용자 제공 데이터 기능 허용` 및 `Extract data from your page` 설정 변경이 포함되어 있습니다. 설정값의 상세 상태는 확인하지 못했으므로, 이 기능들이 비활성이라고 단정하지 않습니다. Google의 태그·데이터 처리 설정과 적용되는 개인정보/동의 요건을 검토한 뒤 사용해야 합니다.
+
+Analytics 사용 시 Google의 데이터 처리 및 개인정보 정책이 적용됩니다. 사이트 운영자는 방문자에게 분석 쿠키/데이터 처리 사실과 목적을 안내하고, 적용되는 동의 요건을 확인해야 합니다. 보고서 데이터가 표시되기까지 시간이 걸릴 수 있습니다.
+
 ## 제작 방식
 
 페이지는 정적 HTML·CSS·JavaScript로 만들었습니다. Cloudflare Pages Advanced Mode의 `public/_worker.js`가 API 요청을 처리하고, 그 밖의 요청은 `env.ASSETS.fetch()`로 정적 페이지와 이미지를 제공합니다. 방명록 데이터는 D1에 저장하고 요청 제한에는 KV를 사용합니다. Google Fonts 요청은 CSS에서 쓰는 DM Mono 400/500과 Manrope 400/500/600/700만 포함합니다.
