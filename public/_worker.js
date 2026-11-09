@@ -112,15 +112,30 @@ async function verifyPassword(password, saltHex, hashHex) {
   return mismatch === 0;
 }
 
-async function handleGet(env) {
+async function handleGet(request, env) {
   try {
-    const result = await env.DB.prepare(
-      "SELECT id, name, message, created_at, likes, password_hash FROM guestbook_entries ORDER BY id DESC LIMIT ?",
-    ).bind(PAGE_SIZE).all();
-    return jsonResponse({ entries: result.results.map((row) => ({
-      id: row.id, name: row.name, message: row.message, createdAt: `${row.created_at}Z`,
-      likes: row.likes, canManage: Boolean(row.password_hash),
-    })) });
+    const beforeId = new URL(request.url).searchParams.get("beforeId");
+    const cursor = beforeId === null ? null : Number(beforeId);
+    if (beforeId !== null && (!Number.isSafeInteger(cursor) || cursor < 1)) {
+      return jsonResponse({ error: "페이지 커서를 확인해주세요." }, 400);
+    }
+    const query = cursor === null
+      ? env.DB.prepare("SELECT id, name, message, created_at, likes, password_hash FROM guestbook_entries ORDER BY id DESC LIMIT ?").bind(PAGE_SIZE + 1)
+      : env.DB.prepare("SELECT id, name, message, created_at, likes, password_hash FROM guestbook_entries WHERE id < ? ORDER BY id DESC LIMIT ?").bind(cursor, PAGE_SIZE + 1);
+    const result = await query.all();
+    const hasMore = result.results.length > PAGE_SIZE;
+    const rows = result.results.slice(0, PAGE_SIZE);
+    return jsonResponse({
+      entries: rows.map((row) => ({
+        id: row.id,
+        name: row.name,
+        message: row.message,
+        createdAt: `${row.created_at}Z`,
+        likes: row.likes,
+        canManage: Boolean(row.password_hash),
+      })),
+      nextBeforeId: hasMore && rows.length ? rows[rows.length - 1].id : null,
+    });
   } catch {
     return jsonResponse({ error: "방명록을 불러오지 못했습니다." }, 500);
   }
@@ -201,7 +216,7 @@ async function handleApi(request, env) {
   const url = new URL(request.url);
   if (url.pathname !== "/api/guestbook") return jsonResponse({ error: "요청한 경로를 찾을 수 없습니다." }, 404);
   if (!env.DB) return jsonResponse({ error: "방명록 데이터베이스가 아직 연결되지 않았습니다." }, 503);
-  if (request.method === "GET") return handleGet(env);
+  if (request.method === "GET") return handleGet(request, env);
   if (!["POST", "PATCH", "DELETE"].includes(request.method)) {
     return new Response(null, { status: 405, headers: { ...JSON_HEADERS, Allow: "GET, POST, PATCH, DELETE" } });
   }

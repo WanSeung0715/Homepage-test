@@ -626,6 +626,59 @@
         line-height: 1.8;
       }
 
+      .guestbook-skeleton {
+        min-height: 104px;
+        overflow: hidden;
+        padding: 16px 18px;
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        background: rgb(255 255 255 / 50%);
+      }
+
+      .skeleton-line {
+        height: 11px;
+        margin-bottom: 12px;
+        border-radius: 5px;
+        background: linear-gradient(90deg, #eceee7 25%, #f6f7f2 38%, #eceee7 63%);
+        background-size: 400% 100%;
+        animation: skeleton-shimmer 1.4s ease infinite;
+      }
+
+      .skeleton-line:first-child { width: 31%; }
+      .skeleton-line:nth-child(2) { width: 82%; }
+      .skeleton-line:last-child { width: 58%; margin-bottom: 0; }
+
+      @keyframes skeleton-shimmer {
+        0% { background-position: 100% 0; }
+        100% { background-position: 0 0; }
+      }
+
+      .guestbook-more-row {
+        display: flex;
+        justify-content: center;
+        margin-top: 18px;
+      }
+
+      .guestbook-more {
+        min-width: 138px;
+        padding: 10px 16px;
+        border: 1px solid #dfe3d5;
+        border-radius: 4px;
+        background: #fffefa;
+        color: #58634c;
+        cursor: pointer;
+        font: inherit;
+        font-size: 11px;
+        transition: background 150ms ease, opacity 150ms ease;
+      }
+
+      .guestbook-more:hover { background: #f2f5eb; }
+      .guestbook-more:disabled { cursor: wait; opacity: 0.6; }
+
+      @media (prefers-reduced-motion: reduce) {
+        .skeleton-line { animation: none; }
+      }
+
       .bowling-ball {
         position: relative;
         flex: 0 0 auto;
@@ -881,9 +934,15 @@
           </form>
 
           <p class="guestbook-intro">공감은 누구나 누를 수 있어요. 반복 클릭은 IP별 횟수 제한으로 완화합니다.</p>
+          <p class="guestbook-list-status" id="guestbook-list-status" role="status" aria-live="polite"></p>
           <ol class="guestbook-list" id="guestbook-list" aria-live="polite" aria-label="방명록 메시지">
-            <li class="guestbook-empty">방명록을 불러오는 중입니다.</li>
+            <li class="guestbook-skeleton" aria-hidden="true"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div></li>
+            <li class="guestbook-skeleton" aria-hidden="true"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div></li>
+            <li class="guestbook-skeleton" aria-hidden="true"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div></li>
           </ol>
+          <div class="guestbook-more-row" id="guestbook-more-row" hidden>
+            <button class="guestbook-more" id="guestbook-more" type="button">방명록 더 보기</button>
+          </div>
         </section>
       </main>
 
@@ -899,8 +958,13 @@
       (() => {
         const form = document.getElementById("guestbook-form");
         const list = document.getElementById("guestbook-list");
+        const listStatus = document.getElementById("guestbook-list-status");
         const status = document.getElementById("guestbook-status");
         const submit = document.getElementById("guestbook-submit");
+        const moreRow = document.getElementById("guestbook-more-row");
+        const moreButton = document.getElementById("guestbook-more");
+        let nextBeforeId = null;
+        let isLoadingEntries = false;
 
         const showStatus = (message, isError = false) => {
           status.textContent = message;
@@ -974,9 +1038,22 @@
           }
         };
 
-        const renderEntries = (entries) => {
-          if (!entries.length) {
-            list.replaceChildren();
+        const createSkeleton = () => {
+          const skeleton = document.createElement("li");
+          skeleton.className = "guestbook-skeleton";
+          skeleton.setAttribute("aria-hidden", "true");
+          for (let index = 0; index < 3; index += 1) {
+            const line = document.createElement("div");
+            line.className = "skeleton-line";
+            skeleton.append(line);
+          }
+          return skeleton;
+        };
+
+        const renderEntries = (entries, append) => {
+          if (append) list.querySelectorAll(".guestbook-skeleton").forEach((item) => item.remove());
+          else list.replaceChildren();
+          if (!entries.length && !append) {
             const empty = document.createElement("li");
             empty.className = "guestbook-empty";
             empty.textContent = "아직 방명록이 없어요. 첫 인사를 남겨주세요!";
@@ -1026,24 +1103,55 @@
             item.append(header, message, actions);
             fragment.append(item);
           }
-          list.replaceChildren(fragment);
+          if (append) list.append(fragment);
+          else list.replaceChildren(fragment);
         };
 
-        const loadEntries = async () => {
+        const loadEntries = async ({ append = false } = {}) => {
+          if (isLoadingEntries) return;
+          isLoadingEntries = true;
+          moreButton.disabled = true;
+          if (!append) nextBeforeId = null;
+          listStatus.textContent = append ? "이전 방명록을 불러오는 중입니다." : "방명록을 불러오는 중입니다.";
+          if (!append) list.replaceChildren(createSkeleton(), createSkeleton(), createSkeleton());
+          else list.append(createSkeleton(), createSkeleton());
+
           try {
-            const response = await fetch("/api/guestbook", {
+            const query = append && nextBeforeId ? `?beforeId=${encodeURIComponent(nextBeforeId)}` : "";
+            const response = await fetch(`/api/guestbook${query}`, {
               headers: { Accept: "application/json" },
             });
             if (!response.ok) throw new Error("방명록을 불러오지 못했습니다.");
             const data = await response.json();
-            renderEntries(data.entries);
+            nextBeforeId = data.nextBeforeId;
+            renderEntries(data.entries, append);
+            moreRow.hidden = nextBeforeId === null;
+            const loadedCount = data.entries.length;
+            const totalShown = list.querySelectorAll(".guestbook-entry").length;
+            listStatus.textContent = data.entries.length === 0 && !append
+              ? "아직 등록된 방명록이 없습니다."
+              : `${loadedCount}개를 불러왔습니다. 현재 ${totalShown}개를 표시합니다.${nextBeforeId ? " 더 보려면 ‘방명록 더 보기’를 누르세요." : " 마지막 페이지입니다."}`;
           } catch {
-            const empty = document.createElement("li");
-            empty.className = "guestbook-empty";
-            empty.textContent = "방명록을 불러올 수 없습니다. 잠시 후 다시 방문해주세요.";
-            list.replaceChildren(empty);
+            const error = document.createElement("li");
+            error.className = "guestbook-empty";
+            error.textContent = "방명록을 불러올 수 없습니다. 잠시 후 다시 시도해주세요.";
+            if (!append) list.replaceChildren(error);
+            else {
+              list.querySelectorAll(".guestbook-skeleton").forEach((item) => item.remove());
+              list.append(error);
+            }
+            moreRow.hidden = nextBeforeId === null;
+            listStatus.textContent = append
+              ? "이전 방명록을 불러오지 못했습니다. 다시 시도해주세요."
+              : "방명록을 불러오지 못했습니다.";
+            moreRow.hidden = false;
+          } finally {
+            isLoadingEntries = false;
+            moreButton.disabled = false;
           }
         };
+
+        moreButton.addEventListener("click", () => loadEntries({ append: true }));
 
         form.addEventListener("submit", async (event) => {
           event.preventDefault();
