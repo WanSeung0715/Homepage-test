@@ -144,7 +144,7 @@ id = "<실제 Cloudflare KV namespace ID>"
 
 - 로컬 테스트와 Production 정책을 같은 변수 하나로 제어할 경우 Production override를 반드시 명시하고 검증합니다.
 - 공개 방명록 요청은 IP 기준 UTC 시간당 작성 20회, 수정·삭제 시도 10회, 공감 60회로 제한합니다.
-- KV key에 UTC 시간 버킷을 포함해 경계마다 새 카운터를 사용합니다. KV는 eventually consistent이므로 이 방식은 best-effort 제한이며 엄격한 전역 상한이 필요하면 Durable Object 카운터를 검토합니다.
+- KV key에 UTC 시간 버킷을 포함하고 TTL을 버킷보다 길게 설정합니다. 같은 bucket의 요청마다 TTL을 갱신하지 않아 다음 UTC 시간에 새 카운터를 사용합니다. KV는 eventually consistent이므로 전역 원자 제한이 아니라 best-effort abuse mitigation입니다. 엄격한 전역 한도가 필요하면 Durable Object 카운터를 검토합니다.
 - API 코드, 안내 문구, README, 로컬 테스트, 원격 테스트가 정책과 일치하는지 확인합니다.
 - 클라이언트 validation만 믿지 말고 Worker 서버에서도 동일한 제약을 확인합니다.
 
