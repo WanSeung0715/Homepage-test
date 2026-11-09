@@ -16,7 +16,7 @@ const MAX_PASSWORD_LENGTH = 9;
 const PASSWORD_ITERATIONS = 100000;
 const PAGE_SIZE = 50;
 const RATE_WINDOW_SECONDS = 3600;
-const RATE_LIMITS = { manage: 10, like: 60 };
+const RATE_LIMITS = { write: 20, manage: 10, like: 60 };
 
 function jsonResponse(body, status = 200) {
   return new Response(JSON.stringify(body), { status, headers: JSON_HEADERS });
@@ -42,23 +42,26 @@ function validPassword(value) {
     && /^[\x21-\x7E]+$/.test(value);
 }
 
-function rateLimitKey(request, action) {
-  return `guestbook:${action}:${request.headers.get("CF-Connecting-IP") || "unknown"}`;
+function rateLimitKey(request, action, now = Date.now()) {
+  const hourBucket = Math.floor(now / (RATE_WINDOW_SECONDS * 1000));
+  return `guestbook:${action}:${request.headers.get("CF-Connecting-IP") || "unknown"}:${hourBucket}`;
 }
 
-async function enforceRateLimit(request, env, action) {
+async function enforceRateLimit(request, env, action, now = Date.now()) {
   if (!env.GUESTBOOK_LIMITER) {
     return jsonResponse({ error: "방명록 요청 제한 설정이 아직 연결되지 않았습니다." }, 503);
   }
-  const key = rateLimitKey(request, action);
+  const key = rateLimitKey(request, action, now);
   const current = Number(await env.GUESTBOOK_LIMITER.get(key) || 0);
   if (current >= RATE_LIMITS[action]) {
-    const error = action === "manage"
-      ? "수정·삭제는 한 시간에 10번까지 시도할 수 있습니다."
-      : "공감은 한 시간에 60번까지 누를 수 있습니다.";
+    const error = action === "write"
+      ? "한 시간에 방명록을 20번까지 남길 수 있습니다."
+      : action === "manage"
+        ? "수정·삭제는 한 시간에 10번까지 시도할 수 있습니다."
+        : "공감은 한 시간에 60번까지 누를 수 있습니다.";
     return jsonResponse({ error }, 429);
   }
-  await env.GUESTBOOK_LIMITER.put(key, String(current + 1), { expirationTtl: RATE_WINDOW_SECONDS });
+  await env.GUESTBOOK_LIMITER.put(key, String(current + 1), { expirationTtl: RATE_WINDOW_SECONDS * 2 });
   return null;
 }
 
@@ -156,6 +159,8 @@ async function handlePost(request, env, payload) {
   if (!name || /[\r\n\t]/.test(name) || !visibleText(name) || !message || !visibleText(message) || !validPassword(payload.password)) {
     return jsonResponse({ error: "이름은 1~40자, 메시지는 1~500자, 비밀번호는 영문·숫자·기호 4~9자로 입력해주세요." }, 400);
   }
+  const limited = await enforceRateLimit(request, env, "write");
+  if (limited) return limited;
   try {
     const credential = await createPasswordHash(payload.password);
     const row = await env.DB.prepare(
